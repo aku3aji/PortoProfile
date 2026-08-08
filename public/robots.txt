@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# TODO: ganti domain di bawah setelah deploy (Vercel atau GitHub Pages).
+Sitemap: https://triaji.vercel.app/sitemap.xml

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7C5CFF" />
+      <stop offset="100%" stop-color="#2DD4BF" />
+    </linearGradient>
+    <radialGradient id="glow" cx="0.78" cy="0.22" r="0.6">
+      <stop offset="0%" stop-color="#7C5CFF" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#7C5CFF" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="1.2" cy="1.2" r="1.2" fill="#232A34" />
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="#08090D" />
+  <rect width="1200" height="630" fill="url(#dots)" opacity="0.7" />
+  <rect width="1200" height="630" fill="url(#glow)" />
+
+  <g font-family="'JetBrains Mono', 'Courier New', monospace">
+    <text x="80" y="120" font-size="24" fill="#2DD4BF">&lt;/&gt; triaji</text>
+  </g>
+
+  <g font-family="'Space Grotesk', 'Segoe UI', sans-serif" fill="#E6EDF3">
+    <text x="80" y="270" font-size="92" font-weight="700" letter-spacing="-3">Triaji Ibnu</text>
+    <text x="80" y="368" font-size="92" font-weight="700" letter-spacing="-3">Hermawan</text>
+  </g>
+
+  <rect x="80" y="410" width="140" height="4" rx="2" fill="url(#accent)" />
+
+  <g font-family="'JetBrains Mono', 'Courier New', monospace" fill="#8B949E" font-size="26">
+    <text x="80" y="475">Fullstack Web Developer</text>
+    <text x="80" y="518">PHP · LARAVEL · REACT · TAILWIND · MYSQL · QA</text>
+  </g>
+
+  <g transform="translate(80 560)">
+    <circle cx="8" cy="8" r="6" fill="#3FB950" />
+    <text x="28" y="14" font-family="'JetBrains Mono', 'Courier New', monospace" font-size="22" fill="#3FB950">
+      Available for work
+    </text>
+  </g>
+
+  <g transform="translate(880 200)" opacity="0.9">
+    <rect x="0" y="0" width="240" height="240" rx="32" fill="#0D1117" stroke="#232A34" stroke-width="2" />
+    <path d="M60 84 h120 M120 84 v96" fill="none" stroke="url(#accent)" stroke-width="22" stroke-linecap="round" />
+  </g>
+</svg>
