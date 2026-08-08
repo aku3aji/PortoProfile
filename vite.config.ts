@@ -8,7 +8,7 @@ import { fileURLToPath, URL } from 'node:url';
  * Kalau repo kamu bernama lain, ganti string di bawah ini.
  * Vercel & `npm run dev` tetap memakai base '/'.
  */
-const GITHUB_REPO_NAME = 'Porto';
+const GITHUB_REPO_NAME = 'PortoProfile';
 
 export default defineConfig(() => ({
   base: process.env.DEPLOY_TARGET === 'gh-pages' ? `/${GITHUB_REPO_NAME}/` : '/',
