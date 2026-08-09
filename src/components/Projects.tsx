@@ -169,12 +169,13 @@ function ProjectCard({
   const hasRepo = Boolean(project.repoUrl);
   const hasShot = Boolean(project.screenshotUrl);
 
-  const cursorLabel =
-    project.status === 'live'
-      ? `${t(content.ui.projects.cursor)} ↗`
-      : project.status === 'in-progress'
-        ? t(content.ui.projects.inProgress)
-        : t(content.ui.projects.internal);
+  // Kartu yang punya demo selalu bisa diklik, jadi labelnya "VIEW ↗" —
+  // termasuk projek yang masih on-progress tapi preview-nya sudah tayang.
+  const cursorLabel = hasDemo
+    ? `${t(content.ui.projects.cursor)} ↗`
+    : project.status === 'in-progress'
+      ? t(content.ui.projects.inProgress)
+      : t(content.ui.projects.internal);
 
   const onMove = (e: React.MouseEvent<HTMLElement>) => {
     if (!tiltEnabled) return;
@@ -247,11 +248,27 @@ function ProjectCard({
             ))}
           </ul>
 
-          <dl className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-line/60 pt-4">
-            <div className="flex items-center gap-2">
-              <dt className="mono-label !text-[0.6rem]">{t(content.ui.projects.role)}</dt>
+          {/* Ditumpuk vertikal, bukan sebaris: kartu paling sempit cuma 3 kolom. */}
+          <dl className="mt-5 flex flex-col gap-2 border-t border-line/60 pt-4">
+            <div className="flex items-baseline gap-2">
+              <dt className="mono-label !text-[0.6rem] shrink-0">{t(content.ui.projects.role)}</dt>
               <dd className="font-mono text-[0.7rem] text-ink/90">{t(project.role)}</dd>
             </div>
+
+            {/* Baris pengujian hanya muncul kalau projeknya memang sudah diuji. */}
+            {project.testing?.length ? (
+              <div className="flex items-baseline gap-2">
+                <dt className="mono-label !text-[0.6rem] shrink-0">{t(content.ui.projects.testing)}</dt>
+                <dd className="font-mono text-[0.7rem] leading-relaxed text-ink/90">
+                  {project.testing.map((method, i) => (
+                    <span key={method}>
+                      {i > 0 ? <span className={cn('mx-1.5 opacity-50', accent.text)}>·</span> : null}
+                      {method}
+                    </span>
+                  ))}
+                </dd>
+              </div>
+            ) : null}
           </dl>
 
           <ul className="mt-3 flex flex-wrap gap-1.5">

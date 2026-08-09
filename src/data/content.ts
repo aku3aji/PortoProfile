@@ -35,7 +35,18 @@ export interface Project {
   description: L;
   /** Poin-poin singkat yang tampil saat kartu di-hover / dibuka. */
   highlights: L[];
+  /**
+   * Tag stack di kartu — nama saja, TANPA nomor versi.
+   * Kartu itu permukaan untuk dipindai sekilas; nomor versi bikin ramai dan
+   * cepat basi. Versi lengkapnya ada di snippet `ide.files` di bawah.
+   */
   tech: string[];
+  /**
+   * Metode pengujian yang benar-benar dijalankan di projek ini.
+   * Nama metodenya teknis dan sama di kedua bahasa, jadi cukup string biasa.
+   * Hapus barisnya kalau belum ada pengujian — barisnya otomatis tidak tampil.
+   */
+  testing?: string[];
   status: ProjectStatus;
   /** Kosongkan (hapus barisnya) kalau link belum ada — tombolnya otomatis disembunyikan. */
   demoUrl?: string;
@@ -155,9 +166,12 @@ export const content = {
   ticker: [
     'PHP',
     'LARAVEL',
+    'TYPESCRIPT',
+    'NEXT.JS',
     'REACT',
     'TAILWIND',
     'MYSQL',
+    'POSTGRESQL',
     'QA & TESTING',
     'NETWORK ADMIN',
     'D4 SIB POLINEMA',
@@ -190,7 +204,8 @@ const dev = {
   name: 'Triaji Ibnu Hermawan',
   role: 'Fullstack Web Developer',
   edu: 'D4 Sistem Informasi Bisnis — POLINEMA (2022–2026)',
-  stack: ['Laravel', 'React', 'Tailwind', 'MySQL'],
+  stack: ['Laravel', 'Next.js', 'React', 'TypeScript', 'Tailwind'],
+  db: ['MySQL', 'PostgreSQL (Prisma)'],
   extras: ['QA & Testing', 'Network Admin (BNSP)'],
   base: 'Malang / Blitar, Jawa Timur',
   openToWork: true,
@@ -212,7 +227,8 @@ const dev = {
   name: 'Triaji Ibnu Hermawan',
   role: 'Fullstack Web Developer',
   edu: 'B.A.Sc. Business Information Systems — POLINEMA (2022–2026)',
-  stack: ['Laravel', 'React', 'Tailwind', 'MySQL'],
+  stack: ['Laravel', 'Next.js', 'React', 'TypeScript', 'Tailwind'],
+  db: ['MySQL', 'PostgreSQL (Prisma)'],
   extras: ['QA & Testing', 'Network Admin (BNSP)'],
   base: 'Malang / Blitar, East Java',
   openToWork: true,
@@ -238,13 +254,15 @@ export default dev;`,
         icon: 'json',
         code: {
           id: `{
-  "languages": ["PHP", "JavaScript", "SQL", "HTML", "CSS"],
-  "frameworks": ["Laravel", "React", "Tailwind CSS", "Bootstrap", "Vite", "Node.js"],
-  "tools": ["Git", "VS Code", "Figma", "MySQL", "Microsoft Office"],
+  "languages": ["PHP", "TypeScript", "JavaScript", "SQL", "HTML", "CSS"],
+  "frameworks": ["Laravel", "Next.js", "React", "Tailwind CSS", "Prisma", "Bootstrap", "Vite"],
+  "databases": ["MySQL", "PostgreSQL (Supabase)"],
+  "tools": ["Git", "VS Code", "Figma", "Node.js", "Microsoft Office"],
   "analysis": ["ERD", "UML", "Business Process (BPMN)"],
   "qa": [
     "Black-box Testing",
     "Unit & Feature Testing (PHPUnit / Laravel)",
+    "Usability Testing",
     "User Acceptance Testing (UAT)",
     "System Usability Scale (SUS)"
   ],
@@ -255,13 +273,15 @@ export default dev;`,
   }
 }`,
           en: `{
-  "languages": ["PHP", "JavaScript", "SQL", "HTML", "CSS"],
-  "frameworks": ["Laravel", "React", "Tailwind CSS", "Bootstrap", "Vite", "Node.js"],
-  "tools": ["Git", "VS Code", "Figma", "MySQL", "Microsoft Office"],
+  "languages": ["PHP", "TypeScript", "JavaScript", "SQL", "HTML", "CSS"],
+  "frameworks": ["Laravel", "Next.js", "React", "Tailwind CSS", "Prisma", "Bootstrap", "Vite"],
+  "databases": ["MySQL", "PostgreSQL (Supabase)"],
+  "tools": ["Git", "VS Code", "Figma", "Node.js", "Microsoft Office"],
   "analysis": ["ERD", "UML", "Business Process (BPMN)"],
   "qa": [
     "Black-box Testing",
     "Unit & Feature Testing (PHPUnit / Laravel)",
+    "Usability Testing",
     "User Acceptance Testing (UAT)",
     "System Usability Scale (SUS)"
   ],
@@ -281,10 +301,24 @@ export default dev;`,
         icon: 'ts',
         code: {
           id: `export const ansthelabel = {
-  type: 'E-commerce',
+  type: 'E-commerce (Laravel monolith)',
   domain: 'Fashion hijab & busana muslimah',
-  stack: ['PHP', 'Laravel', 'MySQL'],
+  stack: {
+    backend: ['PHP ^8.1', 'Laravel ^10', 'MySQL'],
+    auth: ['Laravel Sanctum'],
+    libs: [
+      'barryvdh/laravel-dompdf',      // ekspor PDF
+      'maatwebsite/excel',            // ekspor Excel
+      'intervention/image',           // olah gambar
+      'spatie/image-optimizer',
+      'anhskohbo/no-captcha',         // reCAPTCHA
+      'guzzlehttp/guzzle',
+    ],
+    frontend: ['Laravel Mix + Webpack', 'Tailwind CSS ^3', 'PostCSS'],
+    testing: ['PHPUnit ^10', 'Mockery', 'Faker', 'Pint'],
+  },
   myRole: 'Quality Assurance',
+  tested: ['Usability Testing', 'Unit & Feature Testing (PHPUnit)', 'Black-box Testing'],
   context: 'Magang di PT Global Indo Multimedia (CashPlus)',
   live: 'https://ansthelabel.com/home',
   did: [
@@ -294,10 +328,24 @@ export default dev;`,
   ],
 };`,
           en: `export const ansthelabel = {
-  type: 'E-commerce',
+  type: 'E-commerce (Laravel monolith)',
   domain: 'Hijab & modest fashion',
-  stack: ['PHP', 'Laravel', 'MySQL'],
+  stack: {
+    backend: ['PHP ^8.1', 'Laravel ^10', 'MySQL'],
+    auth: ['Laravel Sanctum'],
+    libs: [
+      'barryvdh/laravel-dompdf',      // PDF export
+      'maatwebsite/excel',            // Excel export
+      'intervention/image',           // image processing
+      'spatie/image-optimizer',
+      'anhskohbo/no-captcha',         // reCAPTCHA
+      'guzzlehttp/guzzle',
+    ],
+    frontend: ['Laravel Mix + Webpack', 'Tailwind CSS ^3', 'PostCSS'],
+    testing: ['PHPUnit ^10', 'Mockery', 'Faker', 'Pint'],
+  },
   myRole: 'Quality Assurance',
+  tested: ['Usability Testing', 'Unit & Feature Testing (PHPUnit)', 'Black-box Testing'],
   context: 'Internship at PT Global Indo Multimedia (CashPlus)',
   live: 'https://ansthelabel.com/home',
   did: [
@@ -316,10 +364,20 @@ export default dev;`,
         icon: 'ts',
         code: {
           id: `export const simotb = {
-  type: 'Sistem internal',
+  type: 'Sistem internal (Laravel monolith)',
   domain: 'Manajemen operasional toko bangunan',
-  stack: ['PHP', 'Laravel', 'MySQL', 'Tailwind', 'Vite', 'Node.js'],
+  stack: {
+    backend: ['PHP ^8.1', 'Laravel ^10', 'MySQL'],
+    auth: ['Laravel Sanctum'],
+    libs: ['barryvdh/laravel-dompdf', 'maatwebsite/excel', 'guzzlehttp/guzzle'],
+    frontend: ['Vite ^5 + laravel-vite-plugin', 'Tailwind CSS ^3', 'Axios', 'PostCSS'],
+    testing: ['PHPUnit ^10', 'Mockery', 'Faker', 'Pint'],
+  },
+  // Basisnya mirip Ansthelabel, tapi lebih ramping:
+  // tanpa library gambar/captcha, dan build-nya Vite — bukan Webpack.
   myRole: 'Fullstack Developer',
+  // Saya bangun sendiri, saya uji sendiri.
+  tested: ['UAT', 'SUS', 'Unit & Feature Testing (PHPUnit)', 'Black-box Testing'],
   access: 'internal', // tidak ada demo publik
   did: [
     'Merancang skema database & ERD dari proses bisnis toko',
@@ -328,10 +386,20 @@ export default dev;`,
   ],
 };`,
           en: `export const simotb = {
-  type: 'Internal system',
+  type: 'Internal system (Laravel monolith)',
   domain: 'Building-supply store operations',
-  stack: ['PHP', 'Laravel', 'MySQL', 'Tailwind', 'Vite', 'Node.js'],
+  stack: {
+    backend: ['PHP ^8.1', 'Laravel ^10', 'MySQL'],
+    auth: ['Laravel Sanctum'],
+    libs: ['barryvdh/laravel-dompdf', 'maatwebsite/excel', 'guzzlehttp/guzzle'],
+    frontend: ['Vite ^5 + laravel-vite-plugin', 'Tailwind CSS ^3', 'Axios', 'PostCSS'],
+    testing: ['PHPUnit ^10', 'Mockery', 'Faker', 'Pint'],
+  },
+  // Same bones as Ansthelabel, but leaner: no image/captcha
+  // libraries, and the build runs on Vite instead of Webpack.
   myRole: 'Fullstack Developer',
+  // I built it, I tested it.
+  tested: ['UAT', 'SUS', 'Unit & Feature Testing (PHPUnit)', 'Black-box Testing'],
   access: 'internal', // no public demo
   did: [
     'Designed the database schema & ERD from the store process',
@@ -381,10 +449,21 @@ export default dev;`,
         code: {
           id: `export const kingkong = {
   status: 'in-progress', // masih dikerjakan
-  type: 'Booking & katalog',
+  type: 'Booking & katalog (Next.js fullstack)',
   domain: 'Jasa barber, mural graffiti, cat mural, merch kaos',
-  stack: ['PHP', 'Laravel', 'MySQL'], // sisanya menyusul
+  stack: {
+    framework: ['Next.js 16', 'React 19', 'TypeScript ^5'],
+    data: ['PostgreSQL', 'Prisma ^7 (@prisma/adapter-pg)', 'Supabase'],
+    auth: ['NextAuth v5 (beta)', '@auth/prisma-adapter', 'bcryptjs'],
+    ui: ['shadcn/ui + Radix UI', 'Tailwind CSS ^4', 'lucide-react', 'motion',
+         'next-themes', 'sonner'],
+    forms: ['react-hook-form', 'zod (@hookform/resolvers)'],
+    i18n: ['next-intl'],
+    tooling: ['ESLint ^9', 'tsx', 'dotenv'],
+  },
   myRole: 'Fullstack Developer',
+  tested: [], // on progress
+  preview: 'https://king-kong-nine.vercel.app/en',
   planned: [
     'Booking jadwal barber & jasa mural',
     'Katalog produk cat mural dan merchandise kaos',
@@ -393,10 +472,21 @@ export default dev;`,
 };`,
           en: `export const kingkong = {
   status: 'in-progress', // still being built
-  type: 'Booking & catalogue',
+  type: 'Booking & catalogue (Next.js fullstack)',
   domain: 'Barber services, graffiti murals, mural paint, tee merch',
-  stack: ['PHP', 'Laravel', 'MySQL'], // more to come
+  stack: {
+    framework: ['Next.js 16', 'React 19', 'TypeScript ^5'],
+    data: ['PostgreSQL', 'Prisma ^7 (@prisma/adapter-pg)', 'Supabase'],
+    auth: ['NextAuth v5 (beta)', '@auth/prisma-adapter', 'bcryptjs'],
+    ui: ['shadcn/ui + Radix UI', 'Tailwind CSS ^4', 'lucide-react', 'motion',
+         'next-themes', 'sonner'],
+    forms: ['react-hook-form', 'zod (@hookform/resolvers)'],
+    i18n: ['next-intl'],
+    tooling: ['ESLint ^9', 'tsx', 'dotenv'],
+  },
   myRole: 'Fullstack Developer',
+  tested: [], // on progress
+  preview: 'https://king-kong-nine.vercel.app/en',
   planned: [
     'Booking slots for barber and mural services',
     'Catalogue for mural paint and t-shirt merchandise',
@@ -418,8 +508,9 @@ Politeknik Negeri Malang.
 
 ## Yang saya kerjakan
 
-- Membangun aplikasi web dengan **Laravel** di belakang dan
-  **React / Tailwind** di depan.
+- Membangun aplikasi web di dua ekosistem: **Laravel + MySQL**
+  untuk sistem internal, dan **Next.js + TypeScript + Postgres**
+  untuk projek yang butuh frontend modern.
 - Merancang **database & ERD** dari proses bisnis, bukan dari tebakan.
 - Menguji sendiri hasilnya: **black-box**, **unit & feature test**,
   **UAT**, sampai **SUS** untuk mengukur kenyamanan pemakai.
@@ -443,8 +534,9 @@ Systems (D4) from State Polytechnic of Malang.
 
 ## What I do
 
-- Build web apps with **Laravel** on the back and
-  **React / Tailwind** on the front.
+- Build web apps in two ecosystems: **Laravel + MySQL** for
+  internal systems, and **Next.js + TypeScript + Postgres**
+  where a modern frontend is the point.
 - Design **databases & ERDs** from the business process,
   not from guesswork.
 - Test my own work: **black-box**, **unit & feature tests**,
@@ -472,8 +564,8 @@ Systems (D4) from State Polytechnic of Malang.
         output: [
           same('triaji@polinema:~$ fullstack-web-developer'),
           {
-            id: '→ Laravel · React · Tailwind · MySQL · pola pikir QA',
-            en: '→ Laravel · React · Tailwind · MySQL · QA mindset',
+            id: '→ Laravel · Next.js · TypeScript · MySQL/Postgres · pola pikir QA',
+            en: '→ Laravel · Next.js · TypeScript · MySQL/Postgres · QA mindset',
           },
         ],
       },
@@ -496,6 +588,7 @@ Systems (D4) from State Polytechnic of Malang.
           same('['),
           same('  "Black-box Testing",'),
           same('  "Unit & Feature Testing (PHPUnit / Laravel)",'),
+          same('  "Usability Testing",'),
           same('  "User Acceptance Testing (UAT)",'),
           same('  "System Usability Scale (SUS)"'),
           same(']'),
@@ -524,6 +617,7 @@ Systems (D4) from State Polytechnic of Malang.
       icon: 'code',
       items: [
         { name: 'PHP', icon: 'php' },
+        { name: 'TypeScript', icon: 'ts' },
         { name: 'JavaScript', icon: 'js' },
         { name: 'SQL', icon: 'db' },
         { name: 'HTML', icon: 'html' },
@@ -536,8 +630,10 @@ Systems (D4) from State Polytechnic of Malang.
       icon: 'layers',
       items: [
         { name: 'Laravel', icon: 'laravel' },
+        { name: 'Next.js', icon: 'next' },
         { name: 'React', icon: 'react' },
         { name: 'Tailwind CSS', icon: 'tailwind' },
+        { name: 'Prisma', icon: 'prisma' },
         { name: 'Bootstrap', icon: 'bootstrap' },
         { name: 'Vite', icon: 'vite' },
         { name: 'Node.js', icon: 'node' },
@@ -545,13 +641,15 @@ Systems (D4) from State Polytechnic of Malang.
     },
     {
       key: 'tools',
-      label: { id: 'Tools', en: 'Tools' },
+      label: { id: 'Tools & Database', en: 'Tools & Databases' },
       icon: 'wrench',
       items: [
         { name: 'Git', icon: 'git' },
         { name: 'VS Code', icon: 'editor' },
         { name: 'Figma', icon: 'figma' },
         { name: 'MySQL', icon: 'db' },
+        { name: 'PostgreSQL', icon: 'postgres' },
+        { name: 'Supabase', icon: 'supabase' },
         { name: 'Microsoft Office', icon: 'office' },
       ],
     },
@@ -584,6 +682,11 @@ Systems (D4) from State Polytechnic of Malang.
           name: 'Unit & Feature Testing',
           icon: 'test',
           note: { id: 'PHPUnit / Laravel', en: 'PHPUnit / Laravel' },
+        },
+        {
+          name: 'Usability Testing',
+          icon: 'usability',
+          note: { id: 'Mengamati pengguna asli memakai produk', en: 'Watching real users use the product' },
         },
         {
           name: 'UAT',
@@ -619,7 +722,8 @@ Systems (D4) from State Polytechnic of Malang.
         { id: 'Pelaporan bug terstruktur sampai diverifikasi selesai', en: 'Structured bug reports tracked to verified closure' },
         { id: 'Uji regresi tiap rilis sebelum naik produksi', en: 'Regression passes before each production release' },
       ],
-      tech: ['PHP', 'Laravel', 'MySQL'],
+      tech: ['PHP', 'Laravel', 'MySQL', 'Sanctum', 'Tailwind', 'Laravel Mix', 'PHPUnit'],
+      testing: ['Usability Testing', 'Unit & Feature Testing (PHPUnit)', 'Black-box Testing'],
       status: 'live',
       demoUrl: 'https://ansthelabel.com/home',
       // TODO: isi `repoUrl` kalau repository-nya boleh dipublikasikan.
@@ -641,7 +745,8 @@ Systems (D4) from State Polytechnic of Malang.
         { id: 'Modul stok, transaksi, dan laporan operasional', en: 'Stock, transaction, and operational reporting modules' },
         { id: 'Frontend Tailwind + Vite di atas Laravel', en: 'Tailwind + Vite frontend on top of Laravel' },
       ],
-      tech: ['PHP', 'Laravel', 'MySQL', 'Tailwind', 'Vite', 'Node.js'],
+      tech: ['PHP', 'Laravel', 'MySQL', 'Sanctum', 'Tailwind', 'Vite', 'PHPUnit'],
+      testing: ['UAT', 'SUS', 'Unit & Feature Testing (PHPUnit)', 'Black-box Testing'],
       status: 'internal',
       // TODO: isi `repoUrl` kalau repository-nya boleh dipublikasikan.
       // TODO: taruh screenshot di `public/shots/simotb.png` lalu buka baris di bawah.
@@ -670,7 +775,7 @@ Systems (D4) from State Polytechnic of Malang.
       // TODO: taruh screenshot di `public/shots/perkesmas.png` lalu buka baris di bawah.
       // screenshotUrl: '/shots/perkesmas.png',
       accent: 'green',
-      span: 'normal',
+      span: 'compact',
     },
     {
       key: 'kingkong',
@@ -679,19 +784,27 @@ Systems (D4) from State Polytechnic of Malang.
       year: '2026',
       role: { id: 'Fullstack Developer', en: 'Fullstack Developer' },
       description: {
-        id: 'Web booking jasa barber & mural graffiti, sekaligus katalog produk cat mural dan merchandise kaos. Sedang dikerjakan — fondasi Laravel dan skema database sudah jalan, sisanya menyusul.',
-        en: 'A booking site for barber and graffiti-mural services, plus a catalogue for mural paint and t-shirt merch. Work in progress — the Laravel foundation and database schema are running, the rest is on the way.',
+        id: 'Web booking jasa barber & mural graffiti, sekaligus katalog cat mural dan merchandise kaos. Satu-satunya projek saya di luar ekosistem PHP — dibangun penuh dengan Next.js, TypeScript, dan PostgreSQL. Masih dikerjakan, tapi versi preview-nya sudah bisa dicoba.',
+        en: 'A booking site for barber and graffiti-mural services, plus a catalogue for mural paint and tee merch. My one project outside the PHP world — built end to end on Next.js, TypeScript, and PostgreSQL. Still in progress, but the preview is already live.',
       },
       highlights: [
         { id: 'Booking jadwal barber & jasa mural', en: 'Booking slots for barber and mural services' },
         { id: 'Katalog cat mural dan merchandise kaos', en: 'Catalogue for mural paint and tee merchandise' },
-        { id: 'Dashboard admin untuk jadwal dan pesanan', en: 'Admin dashboard for schedules and orders' },
+        {
+          id: 'Auth NextAuth v5 + Prisma di atas Postgres (Supabase)',
+          en: 'NextAuth v5 auth + Prisma on Postgres (Supabase)',
+        },
+        {
+          id: 'Fullstack type-safe: TypeScript ujung ke ujung, validasi Zod',
+          en: 'Type-safe fullstack: TypeScript end to end, Zod validation',
+        },
       ],
-      tech: ['PHP', 'Laravel', 'MySQL'],
+      tech: ['Next.js', 'React', 'TypeScript', 'PostgreSQL', 'Prisma', 'Supabase', 'NextAuth', 'Tailwind'],
       status: 'in-progress',
-      // TODO: link demo & repo menyusul setelah projek rilis.
+      demoUrl: 'https://king-kong-nine.vercel.app/en',
+      // TODO: isi `repoUrl` kalau repository-nya boleh dipublikasikan.
       accent: 'amber',
-      span: 'compact',
+      span: 'normal',
     },
   ]),
 
@@ -701,8 +814,8 @@ Systems (D4) from State Polytechnic of Malang.
 
   about: {
     bio: {
-      id: 'Saya Triaji, fresh graduate D4 Sistem Informasi Bisnis Politeknik Negeri Malang. Fokus saya di pengembangan web fullstack dengan Laravel, ditemani kebiasaan berpikir sebagai QA dan latar belakang bisnis yang membantu menerjemahkan kebutuhan jadi solusi yang benar-benar jalan.',
-      en: "I'm Triaji, a fresh graduate in Business Information Systems (D4) from State Polytechnic of Malang. I focus on fullstack web development with Laravel, backed by a QA mindset and a business background that helps translate needs into solutions that actually work.",
+      id: 'Saya Triaji, fresh graduate D4 Sistem Informasi Bisnis Politeknik Negeri Malang. Fokus saya di pengembangan web fullstack — Laravel untuk sistem internal, Next.js dan TypeScript untuk yang butuh frontend modern — ditemani kebiasaan berpikir sebagai QA dan latar belakang bisnis yang membantu menerjemahkan kebutuhan jadi solusi yang benar-benar jalan.',
+      en: "I'm Triaji, a fresh graduate in Business Information Systems (D4) from State Polytechnic of Malang. I focus on fullstack web development — Laravel for internal systems, Next.js and TypeScript where a modern frontend is the point — backed by a QA mindset and a business background that helps translate needs into solutions that actually work.",
     },
     bioSecondary: {
       id: 'Pengalaman jadi QA mengajari saya satu hal yang menempel: kode yang “sudah jalan di laptop saya” belum tentu jalan di tangan orang lain. Jadi saya menulis, lalu menguji, lalu memperbaiki — sebelum orang lain yang menemukannya. Sekarang saya terbuka untuk peluang kerja.',
@@ -884,6 +997,7 @@ Systems (D4) from State Polytechnic of Malang.
       cursor: { id: 'LIHAT', en: 'VIEW' },
       role: { id: 'Peran', en: 'Role' },
       stack: { id: 'Stack', en: 'Stack' },
+      testing: { id: 'Pengujian', en: 'Testing' },
       closeShot: { id: 'Tutup screenshot', en: 'Close screenshot' },
     },
 
